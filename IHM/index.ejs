@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accueil</title>
+</head>
+<body>
+    <div style="width: 50%; margin: auto;">
+        <header>
+            <h1>FilmsApp</h1>
+            <nav>
+                <ul>
+                    <li><a href="/index.js">Accueil</a></li>
+                    <li><a href="/apropos">A propos</a></li>
+                </ul>
+            </nav>
+        </header>
+        <section>
+            <form action="/film" method="post">
+                <input type="hidden" name="id" id="id">
+                <label for="titre">titre</label><br>
+                <input type="text" id="titre" name="titre"><br>
+                <label for="annee">annee</label><br>
+                <textarea name="annee" id="annee" cols="20" rows="5"></textarea><br>
+                <br>
+                <input type="submit" value="Enregistrer">
+            </form>
+            <p>-------------------------------------------------------</p>
+        </section>
+
+        <section>
+            <h2>Listes des films</h2>
+
+
+            <% for (i=0; i<resultat.length; i++){ %>
+
+                <h3><%=resultat[i].titre %></h3>
+                <p><%=resultat[i].annee %></p>
+
+                <input type="button" value="Supprimer" onclick="supprimer('<%= resultat[i].id %>')">
+                <input type="button" value="Modifier" onclick="remplirDonnes('<%= resultat[i].id %>','<%= resultat[i].titre %>','<%= resultat[i].annee %>')">
+               
+
+            <% } %>
+        </section>
+    </div>
+</body>
+<script>
+    function remplirDonnes(id,titre,annee){
+        document.getElementById('id').value = id
+        document.getElementById('titre').value = titre
+        document.getElementById('annee').value = annee
+    }
+
+    function supprimer(id) {
+
+        let pointFinal = "film/" + id
+        fetch(
+            pointFinal,{method: "DELETE"}
+        ).then(
+            (reponse)=>reponse.json()
+        ).then(
+            (donnee)=> window.location.href= donnee.routeRacine
+    ).catch((erreur)=> console.log(erreur))
+        
+    }
+</script>
+</html>
